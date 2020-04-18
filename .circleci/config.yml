@@ -103,7 +103,6 @@ workflows:
                 - master
       - deployDevelopment:
           requires:
-            - build
             - test
           filters:
             branches:
@@ -113,7 +112,6 @@ workflows:
           type: approval 
           requires:
             - deployDevelopment
-            - test
       - productionDeploy:
           requires:
             - request-testing
