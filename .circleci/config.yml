@@ -59,9 +59,7 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-
-
-productionDeploy:
+  productionDeploy:
     docker:
       - image: circleci/node:latest
     working_directory: ~/repo
