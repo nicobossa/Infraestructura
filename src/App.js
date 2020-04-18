@@ -8,7 +8,7 @@ function App() {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
-            SOY EL INICIAL
+            SOY EL INICIAL CAMBIADO
           </p>
         </header>
       </div>
