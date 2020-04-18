@@ -61,6 +61,30 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
 
+      deployProduction:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+      - add_ssh_keys:
+          fingerprints:
+            - "64:97:ea:4c:ad:d4:32:c0:e6:ef:f2:c5:6f:8f:e0:aa"
+      - run: yarn run build
+      - run: scp -o StrictHostKeyChecking=no -r ./build/*  ubuntu@3.21.158.227:/var/www/html
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+
 workflows:
   version: 2
   normal_run:
@@ -85,3 +109,15 @@ workflows:
             branches:
               only:
                 - master
+      - request-testing:
+          type: approval 
+          requires:
+            - deployDevelopment
+            - test
+      - productionDeploy:
+          requires:
+            -request-testing
+          filters:
+            branches:
+              only :
+              - master
