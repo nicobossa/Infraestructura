@@ -61,7 +61,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
 
-      deployProduction:
+deployProduction:
     docker:
       - image: circleci/node:latest
     working_directory: ~/repo
@@ -116,7 +116,7 @@ workflows:
             - test
       - productionDeploy:
           requires:
-            -request-testing
+            - request-testing
           filters:
             branches:
               only :
